@@ -4,12 +4,16 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"time"
 
 	"codeberg.org/anaseto/goal"
 	gos "codeberg.org/anaseto/goal/os"
 	"github.com/eiannone/keyboard"
+	"github.com/faiface/beep"
+	"github.com/faiface/beep/mp3"
+	"github.com/faiface/beep/speaker"
 )
 
 //go:embed k.goal
@@ -68,6 +72,36 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error rendering initial board: %v\n", err)
 	}
+
+	// Open the audio file
+	file, err := os.Open("cat.mp3")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	// Decode the audio file
+	streamer, format, err := mp3.Decode(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer streamer.Close()
+
+	// Initialize the speaker
+	err = speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Play the audio
+	done := make(chan bool)
+	speaker.Play(beep.Seq(streamer, beep.Callback(func() {
+		done <- true
+	})))
+
+	// Wait for audio to finish playing
+	// <-done
+
 	for {
 		select {
 		case <-tick.C:
