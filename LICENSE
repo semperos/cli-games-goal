@@ -1,11 +1,3 @@
-# CLI Games using Goal
-
-This repository shows how to run a game written in Goal from a simple Go wrapper. The Go code has the game loop and provides basic keyboard handling. Your Goal program is meant to do the rest.
-
-See [games-goal](https://github.com/semperos/games-goal) for some games that work with this wrapper.
-
-## License
-
 MIT License
 
 Copyright (c) 2025 Daniel Gregoire
@@ -27,3 +19,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
