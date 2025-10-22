@@ -149,5 +149,5 @@ func main() {
 }
 
 func update(dir string) string {
-	return fmt.Sprintf("next[board;\"%s\"]; render[board]", dir)
+	return fmt.Sprintf("update[board;\"%s\"]; render[board]", dir)
 }
