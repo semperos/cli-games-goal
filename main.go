@@ -4,16 +4,12 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
-	"log"
 	"os"
 	"time"
 
 	"codeberg.org/anaseto/goal"
 	gos "codeberg.org/anaseto/goal/os"
 	"github.com/eiannone/keyboard"
-	"github.com/faiface/beep"
-	"github.com/faiface/beep/mp3"
-	"github.com/faiface/beep/speaker"
 )
 
 //go:embed k.goal
@@ -68,36 +64,36 @@ func main() {
 		return
 	}
 
-	_, err = ctx.Eval("render[board]")
+	_, err = ctx.Eval(`draw""`)
 	if err != nil {
-		fmt.Printf("Error rendering initial board: %v\n", err)
+		fmt.Printf("Error drawing initial board: %v\n", err)
 	}
 
 	// Open the audio file
-	file, err := os.Open("cat.mp3")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
+	// file, err := os.Open("cat.mp3")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// defer file.Close()
 
 	// Decode the audio file
-	streamer, format, err := mp3.Decode(file)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer streamer.Close()
+	// streamer, format, err := mp3.Decode(file)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// defer streamer.Close()
 
 	// Initialize the speaker
-	err = speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
-	if err != nil {
-		log.Fatal(err)
-	}
+	// err = speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
 	// Play the audio
-	done := make(chan bool)
-	speaker.Play(beep.Seq(streamer, beep.Callback(func() {
-		done <- true
-	})))
+	// done := make(chan bool)
+	// speaker.Play(beep.Seq(streamer, beep.Callback(func() {
+	// 	done <- true
+	// })))
 
 	// Wait for audio to finish playing
 	// <-done
@@ -136,7 +132,7 @@ func main() {
 					fmt.Printf("Error moving e: %v\n", err)
 				}
 			case keyboard.KeyEnter:
-				_, err = ctx.Eval(`reset""; render[board]`)
+				_, err = ctx.Eval(`reset""; draw""`)
 				if err != nil {
 					fmt.Printf("Error resetting board: %v\n", err)
 				}
@@ -149,5 +145,5 @@ func main() {
 }
 
 func update(dir string) string {
-	return fmt.Sprintf("update[board;\"%s\"]; render[board]", dir)
+	return fmt.Sprintf(`update"%s"; draw""`, dir)
 }
